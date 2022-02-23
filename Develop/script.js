@@ -18,7 +18,9 @@
   3. Store values in given variables
   4. Depending on which values were selected, add those values to generationChunk
   5. Generate a random number that picks values at of the chunk and adds them to the user's password
-  6. Display password to the user
+  6. Confirm that the generated password contains the specified characters
+  7. If password does not, regenerate password until criteria is met
+  8. Display password to the user
 */
 
 //Initializing Variables
@@ -61,7 +63,7 @@ const passCriteria = () => {
   }
 
   //console log to confirm values are correct
-  console.log(passLength, hasUpper, hasLower, hasNum, hasSpecial)
+  // console.log(passLength, hasUpper, hasLower, hasNum, hasSpecial)
 }
 
 //Generates Password
@@ -92,11 +94,29 @@ const generatePass = () => {
     //add the random character to the users password
     userPassword += rngChar
     console.log(userPassword)
+    //return userPassword
   }
 }
 
+//Check to see if the generated password has all the users criteria
+const passwordVarify = () =>{
+
+}
+
+//checks if the password has lower case characters, returns T or F
+const hasLowerCase = (str) => { return str.toUpperCase() != str}
+//checks if the password has upper case characers, returns T or F
+const hasUpperCase = (str) => {return str.toLowerCase() != str}
+//checks if the password has numbers in it, returns T or F
+const regex = /\d/
+const doesItHaveNumber = regex.test(userPassword)
 
 document.getElementById('generate').addEventListener('click', () => {
   passCriteria()
   generatePass()
+  console.log(hasLowerCase(userPassword))
+  console.log(hasUpperCase(userPassword))
+  console.log(doesItHaveNumber)
+
+  
 })
