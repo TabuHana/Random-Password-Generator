@@ -6,7 +6,7 @@
   -when click button, pass generated
   -prompted for pass criteria?
   -select criteria 
-  - pass length of min 8 max 128
+  -pass length of min 8 max 128
   -choose character types (upper, lower, numeria, special)
   -after all prompts answered input validated???
   -generate password that matches criteria
@@ -28,14 +28,14 @@ let hasNum
 let hasSpecial
 let passLength
 
-const userPassword = ""
+let userPassword = ""
 
 //Password Possible Characters and Generation Chunk
-const charUpper = "abcdefghijklmnopqrstuvwxyz"
-const charLower = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const charUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const charLower = "abcdefghijklmnopqrstuvwxyz"
 const charNumbers = "0123456789"
 const charSymbols = "!@#$%^&*_-+="
-const passChunk = ""
+let passChunk = ""
 
 //Prompt the user wth the criteria
 const passCriteria = () => {
@@ -47,19 +47,27 @@ const passCriteria = () => {
     passLength = parseInt(prompt('Please enter valid criteria.\nPassword length must be between 8 and 128 characters.'))
   }
   //Once length correct, prompt remaining variables
-  hasUpper = confirm('Would you like to include Uppercase characters?\n OK to confirm, Cancel to decline.')
-  hasLower = confirm('Would you like to include Lowercase characters?\n OK to confirm, Cancel to decline.')
-  hasNum = confirm('Would you like to include Numbered characters?\n OK to confirm, Cancel to decline.')
-  hasSpecial = confirm('Would you like to include Special characters?\n OK to confirm, Cancel to decline.')
+  hasUpper = confirm('Would you like to include Uppercase characters?\nOK to confirm, Cancel to decline.')
+  hasLower = confirm('Would you like to include Lowercase characters?\nOK to confirm, Cancel to decline.')
+  hasNum = confirm('Would you like to include Numbered characters?\nOK to confirm, Cancel to decline.')
+  hasSpecial = confirm('Would you like to include Special characters?\nOK to confirm, Cancel to decline.')
+
+  //Catch if the user didn't select any criteria
+  while (!hasUpper && !hasLower && !hasNum && !hasSpecial) {
+    hasUpper = confirm('Please reconfirm.\nWould you like to include Uppercase characters?\n OK to confirm, Cancel to decline.')
+    hasLower = confirm('Would you like to include Lowercase characters?\nOK to confirm, Cancel to decline.')
+    hasNum = confirm('Would you like to include Numbered characters?\nOK to confirm, Cancel to decline.')
+    hasSpecial = confirm('Would you like to include Special characters?\nOK to confirm, Cancel to decline.')
+  }
 
   //console log to confirm values are correct
   console.log(passLength, hasUpper, hasLower, hasNum, hasSpecial)
 }
 
 //Generates Password
-const generatePass = () =>{
+const generatePass = () => {
   //if upper case, add to chunk
-  if(hasUpper){
+  if (hasUpper) {
     passChunk += charUpper
   }
   //if lower case, add to chunk
@@ -79,12 +87,16 @@ const generatePass = () =>{
   for (let i = 0; i < passLength; i++) {
     //random variable that chooses a character in the chunk
     let rngIndex = Math.floor(Math.random() * passChunk.length)
-    userPassword +=
-    
+    //random variable that selects from the chunk using the index
+    let rngChar = passChunk[rngIndex]
+    //add the random character to the users password
+    userPassword += rngChar
+    console.log(userPassword)
   }
 }
 
 
 document.getElementById('generate').addEventListener('click', () => {
-  passCriteria();
+  passCriteria()
+  generatePass()
 })
