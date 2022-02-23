@@ -17,7 +17,8 @@
   2. Varify all criteria is met
   3. Store values in given variables
   4. Depending on which values were selected, add those values to generationChunk
-  5.
+  5. Generate a random number that picks values at of the chunk and adds them to the user's password
+  6. Display password to the user
 */
 
 //Initializing Variables
