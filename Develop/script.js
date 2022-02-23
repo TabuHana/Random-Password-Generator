@@ -18,8 +18,8 @@
   3. Store values in given variables
   4. Depending on which values were selected, add those values to generationChunk
   5. Generate a random number that picks values at of the chunk and adds them to the user's password
-  6. Confirm that the generated password contains the specified characters
-  7. If password does not, regenerate password until criteria is met
+  6. Confirm that the generated password contains the user specified characters
+  7. If password does not match criteria, regenerate password then recheck until criteria is met
   8. Display password to the user
 */
 
@@ -29,6 +29,7 @@ let hasUpper
 let hasNum
 let hasSpecial
 let passLength
+
 
 let userPassword = ""
 
@@ -66,8 +67,31 @@ const passCriteria = () => {
   // console.log(passLength, hasUpper, hasLower, hasNum, hasSpecial)
 }
 
+//checks if the password has lower case characters, returns T or F
+const hasLowerCase = (str) => { return str.toUpperCase() != str }
+
+//checks if the password has upper case characers, returns T or F
+const hasUpperCase = (str) => { return str.toLowerCase() != str }
+
+//checks if the password has numbers in it using .test, returns T or F
+const numCriteria = (str) => {
+  const regex = /\d/
+  const numCriteria = regex.test(str)
+  return numCriteria
+}
+
+//checks if the password has special characters in it using .test, returns T or F
+const hasSpecialChar = (str) => {
+  const specialChars = /[!@#$%^&*_+-=]/
+  return specialChars.test(str)
+}
+
+
+
 //Generates Password
 const generatePass = () => {
+  //Creates a fresh user password. This is so if criteria failed, it does not overlap on the old password
+  userPassword = ''
   //if upper case, add to chunk
   if (hasUpper) {
     passChunk += charUpper
@@ -94,29 +118,54 @@ const generatePass = () => {
     //add the random character to the users password
     userPassword += rngChar
     console.log(userPassword)
-    //return userPassword
   }
+  return userPassword
 }
 
 //Check to see if the generated password has all the users criteria
-const passwordVarify = () =>{
+const passwordVarify = () => {
+  //generates a user password
+  generatePass()
 
+  //checks if the user wants lower case char but the criteria fails
+  if (hasLower && !hasLowerCase(userPassword)) {
+    console.log('failed to meet Lowercase criteria')
+    passwordVarify()
+  }
+  //checks if the user wants upper case char but the criteria fails
+  if (hasUpper && !hasUpperCase(userPassword)) {
+    console.log('failed to meet Uppercase criteria')
+    passwordVarify()
+  }
+  //checks if the user wants numbers but the criteria fails
+  if (hasNum && !numCriteria(userPassword)) {
+    console.log('failed to meet Number criteria')
+    passwordVarify()
+  }
+  //checks if the user wants special characters but the criteria fails
+  if (hasSpecial && !hasSpecialChar(userPassword)) {
+    console.log('failed to meet Special Character criteria')
+    passwordVarify()
+  }
 }
 
-//checks if the password has lower case characters, returns T or F
-const hasLowerCase = (str) => { return str.toUpperCase() != str}
-//checks if the password has upper case characers, returns T or F
-const hasUpperCase = (str) => {return str.toLowerCase() != str}
-//checks if the password has numbers in it, returns T or F
-const regex = /\d/
-const doesItHaveNumber = regex.test(userPassword)
 
+
+//Runs on button click
 document.getElementById('generate').addEventListener('click', () => {
+  //Prompts user for criteria check
   passCriteria()
-  generatePass()
-  console.log(hasLowerCase(userPassword))
-  console.log(hasUpperCase(userPassword))
-  console.log(doesItHaveNumber)
+  //Generates a password and checks if password meets user criteria
+  passwordVarify()
+  //Console logs to double check if all criteria are met and password generation is working correctly
+  console.log('Lowercase criteria : ' + hasLowerCase(userPassword))
+  console.log('Uppercase criteria : ' + hasUpperCase(userPassword))
+  console.log('Number criteria : ' + numCriteria(userPassword))
+  console.log('Special Char criteria : ' + hasSpecialChar(userPassword))
 
-  
+  //changes inner HTML to user password
+  document.getElementById('password').innerHTML = userPassword
+
+
+
 })

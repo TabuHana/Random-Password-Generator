@@ -17,4 +17,6 @@ Once password is generated, display it to the user.
 3. Store values in given variables
 4. Depending on which values were selected, add those values to generationChunk
 5. Generate a random number that picks values at of the chunk and adds them to the user's password
-6. Display password to the user
+6. Confirm that the generated password contains the user specified characters
+7. If password does not match criteria, regenerate password then recheck until criteria is met
+8. Display password to the user
